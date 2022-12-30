@@ -1,0 +1,5 @@
+# Heaviest object in the universe
+/node_modules
+
+# Secrets of the universe
+.env
