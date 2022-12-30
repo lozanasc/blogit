@@ -1,12 +1,70 @@
 {
-  "name": "fullstack-blogsite-be",
+  "name": "blogit-be",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Backend API server for blogit a NodeJS Bootcamp Final Project",
+  "main": "server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "post:build": "node ./dist/server.js",
+    "dev": "nodemon server.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lozanasc/blogit.git"
+  },
+  "keywords": [
+    "blog",
+    "typescript",
+    "fullstack",
+    "sequelize",
+    "postgres",
+    "api",
+    "backend",
+    "frontend",
+    "express",
+    "nodejs"
+  ],
+  "author": "Sean Christian Lozana",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lozanasc/blogit/issues"
+  },
+  "homepage": "https://github.com/lozanasc/blogit#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "chalk": "^4.1.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-validator": "^6.14.2",
+    "jsonwebtoken": "^9.0.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^6.28.0",
+    "sequelize-typescript": "^2.1.5"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/cookie-parser": "^1.4.3",
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.15",
+    "@types/jsonwebtoken": "^9.0.0",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^18.11.18",
+    "@types/validator": "^13.7.10",
+    "@typescript-eslint/eslint-plugin": "^5.47.1",
+    "eslint": "^8.30.0",
+    "eslint-config-standard-with-typescript": "^24.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.6.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  }
 }
