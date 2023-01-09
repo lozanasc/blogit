@@ -6,3 +6,6 @@
 
 # Server storage
 /storage
+
+# Build folder
+/dist
