@@ -17,7 +17,7 @@ declare module "jsonwebtoken" {
   }
 }
 
-export default function verifyJwt(req: Request, res: Response, next: NextFunction){
+export const verifyJwt = (req: Request, res: Response, next: NextFunction) => {
 
   if (req.skip) {
     return next();
