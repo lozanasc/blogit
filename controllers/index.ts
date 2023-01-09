@@ -1,26 +1,34 @@
-import { login, signup } from "./auth.controller";
 import { 
-  getPublicBlogs,
-  getFeaturedBlogs,
-  retrieveUserBlogs,
+  login, 
+  signup,
+  signout,
+  refreshToken
+ } from "./auth.controller";
+ 
+import { 
+  getBlogs,
+  getUserBlogs,
   postUserBlog,
-  retrieveBlog,
+  getBlogById,
   editUserBlog,
-  deleteUserBlog
+  deleteUserBlog,
 } from "./blog.controller";
-import { getProfile } from "./user.controller";
+
+import { getProfile, updateProfile } from "./user.controller";
 import { notFound } from "./error.controller";
 
 export { 
   login,
   signup,
-  getPublicBlogs,
-  getFeaturedBlogs,
-  retrieveUserBlogs,
+  signout,
+  refreshToken,
+  getBlogs,
+  getUserBlogs,
   postUserBlog,
-  retrieveBlog,
+  getBlogById,
   editUserBlog,
   deleteUserBlog,
   getProfile,
+  updateProfile,
   notFound,
 };

@@ -1,15 +1,24 @@
+import skipVerifyJwt from "./skipVerifyJwt";
+
 import { 
-  validateSignup, 
-  validateLogin, 
-  validateUpload 
+  validateSignup,
+  validateLogin,
+  validateUpload,
+  validateBlogUpdate,
+  validateProfileUpdate,
 } from "./validation";
-import verifyJWT from "./verifyJWT";
+
+import verifyJwt from "./verifyJwt";
+
 import verifyRole from "./verifyRole";
 
 export {
   validateLogin,
   validateSignup,
   validateUpload,
-  verifyJWT,
+  validateProfileUpdate,
+  validateBlogUpdate,
+  verifyJwt,
   verifyRole,
+  skipVerifyJwt,
 };

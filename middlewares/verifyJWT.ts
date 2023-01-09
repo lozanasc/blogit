@@ -1,21 +1,27 @@
 import { NextFunction, Request, Response } from "express";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt, { JsonWebTokenError, JwtPayload } from "jsonwebtoken";
 
 declare module "express-serve-static-core" {
   interface Request {
     currentUser: string;
     role: string;
+    skipVerifyJwt: boolean;
+    skip: boolean;
   }
 }
 
 declare module "jsonwebtoken" {
   interface JwtPayload {
-    username: string;
+    userId: string;
     role: string;
   }
 }
 
-export default function verifyJWT(req: Request, res: Response, next: NextFunction){
+export default function verifyJwt(req: Request, res: Response, next: NextFunction){
+
+  if (req.skip) {
+    return next();
+  }
 
   const authorizationHeader = req.headers.authorization;
 
@@ -33,12 +39,16 @@ export default function verifyJWT(req: Request, res: Response, next: NextFunctio
     
     decoded = jwt.verify(jwtToken, SECRET) as JwtPayload;
 
-    req.currentUser = decoded.username;
+    req.currentUser = decoded.userId;
 
     req.role = decoded.role;
 
-  } catch (err: any) {
-    res.status(401).send({ error: true, message: "Invalid token!" });
+  } catch (err: unknown) {
+
+    if (err instanceof JsonWebTokenError) {
+      return res.status(401).send({ error: true, message: err.message });
+    }
+
   }
 
   next();

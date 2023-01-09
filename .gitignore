@@ -3,3 +3,6 @@
 
 # Secrets of the universe
 .env
+
+# Server storage
+/storage

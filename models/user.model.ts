@@ -1,3 +1,4 @@
+import { UUIDV4 } from "sequelize";
 import { 
   Table, 
   Model, 
@@ -7,32 +8,23 @@ import {
   UpdatedAt,
   DeletedAt,
   HasMany,
-  HasOne
+  HasOne,
+  Unique,
+  Default
 } from "sequelize-typescript";
 
 import { Blog } from "./blogs.model";
 import { Token } from "./token.model";
 
-// 👤 User Schema
-// id (pk)
-// username
-// password
-// first_name
-// last_name
-// email
-// profile_picture_url
-// created_at
-// updated_at
-// deleted_at
-// password_chances
-// role
-
 @Table
 export class User extends Model {
   
-  @PrimaryKey @Column
+  @PrimaryKey 
+  @Default(UUIDV4) 
+  @Column
   id!: string;
 
+  @Unique 
   @Column
   username!: string;
 
@@ -45,19 +37,23 @@ export class User extends Model {
   @Column
   last_name!: string;
 
+  @Unique 
   @Column
   email!: string;
 
   @Column
   profile_picture_url!: string;
 
-  @CreatedAt @Column
-  created_at!: Date;
+  @CreatedAt 
+  @Column
+  created_at?: Date;
 
-  @UpdatedAt @Column
-  updated_at!: Date;
+  @UpdatedAt 
+  @Column
+  updated_at?: Date;
 
-  @DeletedAt @Column
+  @DeletedAt 
+  @Column
   deleted_at?: Date;
   
   @Column

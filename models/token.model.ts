@@ -1,3 +1,4 @@
+import { UUIDV4 } from "sequelize";
 import { 
   Table, 
   Model, 
@@ -7,15 +8,17 @@ import {
   UpdatedAt,
   DeletedAt,
   ForeignKey,
-  AllowNull,
-  BelongsTo
+  BelongsTo,
+  Default,
+  AllowNull
 } from "sequelize-typescript";
 import { User } from "./user.model";
 
 @Table
 export class Token extends Model {
 
-  @PrimaryKey
+  @PrimaryKey 
+  @Default(UUIDV4) 
   @Column
   id!: string;
 
@@ -26,16 +29,20 @@ export class Token extends Model {
   @BelongsTo(() => User)
   user!: User;
 
-  @CreatedAt @Column
-  created_at!: Date;
+  @CreatedAt 
+  @Column
+  created_at?: Date;
 
-  @UpdatedAt @Column
+  @UpdatedAt 
+  @Column
   updated_at?: Date;
 
-  @DeletedAt @AllowNull @Column
+  @DeletedAt 
+  @Column
   deleted_at?: Date;
 
+  @AllowNull 
   @Column
-  refreshToken?: string;
+  refresh_token?: string;
   
 }
