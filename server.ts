@@ -25,7 +25,7 @@ const PORT: number = Number(process.env.PORT) || 8000;
 const api: Application = express();
 
 api.use(multer({ storage: fileStorage, fileFilter }).single("image"));
-api.use(cors());
+// api.use(cors());
 api.use(express.json());
 api.use(express.urlencoded({ extended: true }));
 api.use(cookieParser());
