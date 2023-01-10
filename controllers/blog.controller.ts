@@ -4,6 +4,15 @@ import { Op } from "sequelize";
 import { Blog } from "../models";
 import { paginate, updateImage } from "../utils";
 
+declare module "express-serve-static-core" {
+  interface Request {
+    currentUser: string;
+    role: string;
+    skipVerifyJwt: boolean;
+    skip: boolean;
+  }
+}
+
 export const getBlogs = async(req: Request, res: Response, _next: NextFunction) => {
 
   const { q, page, limit, order_by, order_direction } = req.query;
