@@ -5,7 +5,7 @@
 .env
 
 # Server storage
-/storage
+./storage
 
 # Build folder
-/dist
+./dist
