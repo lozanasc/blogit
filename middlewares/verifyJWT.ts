@@ -1,6 +1,22 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { JsonWebTokenError, JwtPayload } from "jsonwebtoken";
 
+declare module "express-serve-static-core" {
+  interface Request {
+    currentUser: string;
+    role: string;
+    skipVerifyJwt: boolean;
+    skip: boolean;
+  }
+}
+
+declare module "jsonwebtoken" {
+  interface JwtPayload {
+    userId: string;
+    role: string;
+  }
+}
+
 const verifyJwt = (req: Request, res: Response, next: NextFunction) => {
 
   if (req.skip) {
