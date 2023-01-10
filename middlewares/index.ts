@@ -8,7 +8,7 @@ import {
   validateProfileUpdate,
 } from "./validation";
 
-import { verifyJwt } from "./verifyJwt";
+import verifyJwt  from "./verifyJwt";
 
 import { verifyRole } from "./verifyRole";
 
