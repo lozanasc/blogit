@@ -85,6 +85,12 @@ export const validateBlogUpdate = [
     .isBoolean()
     .withMessage("Invalid isDraft value"),
 
+    check("unarchive", "an updated unarchive state value is required")
+    .optional()
+    .notEmpty()
+    .isBoolean()
+    .withMessage("Invalid unarchive value"),
+
 ];
 
 export const validateProfileUpdate = [
