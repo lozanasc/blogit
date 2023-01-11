@@ -18,14 +18,16 @@ import {
 
 
 import { fileStorage, sequelize } from "./config";
-import { fileFilter } from "./utils";
+import { fileFilter, options } from "./utils";
 
 const PORT: number = Number(process.env.PORT) || 8000;
 
 const api: Application = express();
 
+const corsOptions = process.env.APP_ENV !== "dev" ? options : {};
+
 api.use(multer({ storage: fileStorage, fileFilter }).single("image"));
-// api.use(cors());
+api.use(cors(corsOptions));
 api.use(express.json());
 api.use(express.urlencoded({ extended: true }));
 api.use(cookieParser());
