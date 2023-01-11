@@ -51,7 +51,7 @@ export const getUserBlogs = async(req: Request, res: Response, _next: NextFuncti
   if (!req.skip) {
     const limitPublic = id && search.where;
 
-    // Will include soft-deleted records
+    // Disabling paranoid will include soft-deleted records
     search = { ...search, paranoid: false }
 
     search.where = {
@@ -173,6 +173,7 @@ export const editUserBlog = async(req: Request, res: Response, _next: NextFuncti
     title,
     description,
     isDraft,
+    unarchive,
   } = req.body;
 
   const isBlogIdValid = await Blog.findOne({ where: { userId: currentUser, id }, });
@@ -182,7 +183,7 @@ export const editUserBlog = async(req: Request, res: Response, _next: NextFuncti
   }
 
   if (coverPhoto) {
-     // Removes user's current profile image in the server
+     // Removes user's current cover image in the server
      updateImage(isBlogIdValid?.cover_picture_url!);
   }
 
@@ -192,6 +193,7 @@ export const editUserBlog = async(req: Request, res: Response, _next: NextFuncti
       description,
       cover_picture_url: coverPhoto,
       is_draft: isDraft,
+      deleted_at: unarchive && null,
     },
     { where: { userId: currentUser, id }});
 
