@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 export const verifyRole = (...roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
 
-    if (req.skipVerifyJwt) {
+    if (req.skip) {
       return next();
     }
 
