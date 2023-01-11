@@ -1,11 +1,11 @@
 # Heaviest object in the universe
-/node_modules
+node_modules
 
 # Secrets of the universe
 .env
 
 # Server storage
-/storage
+storage
 
 # Build folder
-/dist
+dist
