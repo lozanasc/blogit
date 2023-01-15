@@ -27,7 +27,15 @@ const api: Application = express();
 // const corsOptions = process.env.APP_ENV !== "dev" ? options : {};
 
 api.use(multer({ storage: fileStorage, fileFilter }).single("image"));
+
 api.use(cors());
+
+api.use((req: Request, res: Response, next: NextFunction) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'x-www-form-urlencoded, Origin, X-Requested-With, Content-Type, Accept, Authorization, *');
+  next();
+});
+
 api.use(express.json());
 api.use(express.urlencoded({ extended: true }));
 api.use(cookieParser());
