@@ -12,7 +12,6 @@ export const getProfile = async(req: Request, res: Response, _next: NextFunction
     attributes: {
     exclude: [
       "id",
-      "password",
       "password_chances",
       "created_at",
       "updated_at",
@@ -63,7 +62,7 @@ export const updateProfile = async(req: Request, res: Response, _next: NextFunct
   if (password) {
     
     if (foundUserById?.password_chances! <= 0) {
-      return res.status(400).send({ error: false, message: "Sorry you're out of password chances." });
+      return res.status(400).send({ error: true, message: "Sorry you're out of password chances." });
     }
 
     const salt = await genSalt(10);
@@ -73,7 +72,6 @@ export const updateProfile = async(req: Request, res: Response, _next: NextFunct
     updatePasswordChance = foundUserById?.password_chances! - 1;
 
     newPassword = encryptedPassword;
-
   }
 
   if (profilePicture) {
