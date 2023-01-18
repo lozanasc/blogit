@@ -1,12 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
-import { compare, genSalt, hash } from "bcrypt";
-// import md5 from "md5";
+import md5 from "md5";
 import { JsonWebTokenError, JwtPayload, sign, verify } from "jsonwebtoken";
+import { unlinkSync } from "fs";
 
 import { User, Token } from "../models";
-import { uploadImage } from "../utils";
-import { unlinkSync } from "fs";
+import { uploadImage, compare } from "../utils";
 
 export const login = async(req: Request, res: Response, _next: NextFunction) => {
   
@@ -24,9 +23,7 @@ export const login = async(req: Request, res: Response, _next: NextFunction) => 
     return res.status(400).send({ error: true, message: "No user with that email." });
   }
 
-  const decryptPassword = await compare(password, foundUserByEmail.password);
-
-  if (!decryptPassword) {
+  if (!compare(password, foundUserByEmail.password)) {
     return res.status(400).send({ error: true, message: "Wrong password." });
   }
 
@@ -83,8 +80,7 @@ export const signup = async(req: Request, res: Response, _next: NextFunction) =>
     email,
   } = req.body;
 
-  const salt = await genSalt(10);
-  const encryptedPassword = await hash(password, salt);
+  const encryptedPassword = md5(password);
 
   const isUserDuplicate = await User.findOne({ where: { email }});
 
