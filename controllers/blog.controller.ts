@@ -15,7 +15,7 @@ export const getBlogs = async(req: Request, res: Response, _next: NextFunction) 
   let order: any = [];
 
   if (q) {
-    search.where = { ...search.where, title: { [Op.like]: `%${q}` } };
+    search.where = { ...search.where, title: { [Op.iLike]: `%${q}%` } };
   }
 
   if (order_by && order_direction) {

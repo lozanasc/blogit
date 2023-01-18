@@ -5,7 +5,6 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import chalk from "chalk";
 import multer from "multer";
-import path from "path";
 
 config();
 
@@ -28,7 +27,7 @@ const PORT: number = Number(process.env.PORT) || 8000;
 
 const api: Application = express();
 
-api.use(cors({ credentials: true, origin: process.env.ALLOWED_ORIGIN}));
+api.use(cors({ credentials: true, origin: process.env.ALLOWED_ORIGIN || "http://localhost:3000"}));
 
 api.use(multer({ storage: fileStorage, fileFilter }).single("image"));
 
