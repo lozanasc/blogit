@@ -28,7 +28,6 @@ import {
   LockClosedIcon,
 } from "@heroicons/react/24/solid";
 
-import Axios from "axios";
 import useAuth from "../../hooks/useAuth";
 
 import LogoCenteredDark from "../../assets/logo-centered-dark.svg";
@@ -52,17 +51,17 @@ const Login = () => {
   const onSubmit = async (data) => {
     let resData;
 
-    console.log(data);
-
     try {
-      const response = await Axios.post(`${process.env.REACT_APP_TEST_URL}/login`, data, {
+      const response = await fetch(`${process.env.REACT_APP_TEST_URL}/login`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        withCredentials: true,
+        body: JSON.stringify(data),
+        credentials: "include",
       });
 
-      resData = response.data;
+      resData = await response.json();
     } catch (error) {
       toast({
         title: "Oops",
