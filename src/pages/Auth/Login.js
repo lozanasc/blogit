@@ -52,13 +52,13 @@ const Login = () => {
   const onSubmit = async (data) => {
     let resData;
 
+    console.log(data);
+
     try {
-      const response = await Axios(`${process.env.REACT_APP_TEST_URL}/login`, {
-        method: "POST",
+      const response = await Axios.post(`${process.env.REACT_APP_TEST_URL}/login`, data, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
         withCredentials: true,
       });
 
