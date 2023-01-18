@@ -1,6 +1,11 @@
 import { Router } from "express";
 
-import { login, refreshToken, signout, signup } from "../controllers";
+import { 
+  login,
+  refreshToken,
+  signout,
+  signup,
+} from "../controllers";
 
 import { validateLogin, validateSignup } from "../middlewares";
 

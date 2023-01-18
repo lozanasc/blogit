@@ -18,7 +18,6 @@ import {
 
 const blogRouter: Router = Router();
 
-// Public
 blogRouter.get("/blogs", getBlogs);
 
 blogRouter.get("/blogs/user", skipVerifyJwt, verifyJwt, getUserBlogs);

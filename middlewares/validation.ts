@@ -68,28 +68,28 @@ export const validateUpload = [
 export const validateBlogUpdate = [
 
   check("title", "Title is required")
-    .optional()
     .notEmpty()
     .isLength({ min: 2 })
-    .withMessage("Title must be at least 2+ characters long"),
+    .withMessage("Title must be at least 2+ characters long")
+    .optional(),
     
   check("description", "Description is required")
-    .optional()
     .notEmpty()
-    .isLength({ min: 50 })
-    .withMessage("Your blog must be at least 50+ characters long"),
+    .withMessage("Your blog must be at least 50+ characters long")
+    .optional(),
 
   check("isDraft", "an updated draft state value is required")
-    .optional()
     .notEmpty()
     .isBoolean()
-    .withMessage("Invalid isDraft value"),
+    .withMessage("Invalid isDraft value")
+    .optional(),
+
 
     check("unarchive", "an updated unarchive state value is required")
-    .optional()
     .notEmpty()
     .isBoolean()
-    .withMessage("Invalid unarchive value"),
+    .withMessage("Invalid unarchive value")
+    .optional(),
 
 ];
 
@@ -97,14 +97,12 @@ export const validateProfileUpdate = [
 
   check("email")
     .optional()
-    .notEmpty()
     .isEmail()
     .normalizeEmail()
     .withMessage("Invalid email"),
 
   check("password")
     .optional()
-    .notEmpty()
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8+ characters long")
     .matches(/(?=.*[!@#$%^&*])/)
@@ -114,14 +112,11 @@ export const validateProfileUpdate = [
 
   check("firstName")
     .optional()
-    .notEmpty()
-    .notEmpty()
     .isString()
     .withMessage("Invalid type as firstName"),
 
   check("lastName")
     .optional()
-    .notEmpty()
     .isString()
     .withMessage("Invalid type as lastName"),
 

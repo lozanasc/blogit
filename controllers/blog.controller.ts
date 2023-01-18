@@ -1,22 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
+import { unlinkSync } from "fs";
 import { Op } from "sequelize";
-import { Blog } from "../models";
-import { paginate, updateImage } from "../utils";
-
-declare module "express-serve-static-core" {
-  interface Request {
-    currentUser: string;
-    role: string;
-    skipVerifyJwt: boolean;
-    skip: boolean;
-  }
-}
+import { Blog, User } from "../models";
+import { paginate, uploadImage } from "../utils";
 
 export const getBlogs = async(req: Request, res: Response, _next: NextFunction) => {
-
   const { q, page, limit, order_by, order_direction } = req.query;
-  
+
   let search: any = { 
     where: { is_draft: false, },
   };
@@ -31,29 +22,45 @@ export const getBlogs = async(req: Request, res: Response, _next: NextFunction) 
     order.push([order_by, order_direction]);
   }
 
-  const allBlogs = await paginate(Blog, Number(page), Number(limit), search, order, null);
+  const transform = (records: Blog[]) => {
+    return records.map(record => {
+        return {
+            id: record.id,
+            title: record.title,
+            description: record.description,
+            created_at: record.created_at,
+            cover_picture_url: record.cover_picture_url,
+            author: `${record.user.first_name} ${record.user.last_name}`,
+            author_profile: record.user.profile_picture_url,
+        }
+    });
+  }
+
+  const allBlogs = await paginate(Blog, Number(page), Number(limit), search, order, transform);
 
   return res.status(200).send({ error: false, message: "Fetched public blogs", data: allBlogs });
 }
 
 export const getUserBlogs = async(req: Request, res: Response, _next: NextFunction) => {
-  
   const { currentUser } = req;
 
   const { id } = req.query;
 
-  const { q, page, limit, order_by, order_direction } = req.query;
+  const { q, page, limit, order_by, order_direction, filter } = req.query;
   
   let search: any = { where: { is_draft: false, }, };
 
   let order: any = [];
   
+  console.log(req.skip)
+
   if (!req.skip) {
     const limitPublic = id && search.where;
 
+    // base authorized user
     // Disabling paranoid will include soft-deleted records
     search = { ...search, paranoid: false }
-
+    
     search.where = {
       ...limitPublic,
       userId: id || currentUser,
@@ -66,8 +73,40 @@ export const getUserBlogs = async(req: Request, res: Response, _next: NextFuncti
   
   if (req.skip) {
     search.where = {
-      ...search.where,
+      is_draft: false,
       userId: id,
+    }
+  }
+
+  if (filter && currentUser) {
+    if (filter === "active") {
+      search = {
+        where: {
+          is_draft: false,
+          userId: id || currentUser,
+        },
+        paranoid: true,
+      }
+    } 
+
+    if (filter === "draft") {
+      search = {
+        where: {
+          is_draft: true,
+          userId: id || currentUser,
+        },
+        paranoid: true,
+      }
+    }
+
+    if (filter === "archived") {
+      search = {
+        where: {
+          deleted_at: { [Op.not]: null },
+          userId: id || currentUser,
+        },
+        paranoid: false,
+      }
     }
   }
 
@@ -80,7 +119,22 @@ export const getUserBlogs = async(req: Request, res: Response, _next: NextFuncti
     order.push([order_by, order_direction]);
   }
 
-  const allBlogs = await paginate(Blog, Number(page), Number(limit), search, order, null);
+  let transform = (records: Blog[]) => {
+    return records.map(record => {
+        return {
+            id: record.id,
+            title: record.title,
+            description: record.description,
+            created_at: record.created_at,
+            deleted_at: record.deleted_at,
+            cover_picture_url: record.cover_picture_url,
+            author: `${record.user.first_name} ${record.user.last_name}`,
+            author_profile: record.user.profile_picture_url,
+        }
+    });
+  }
+
+  const allBlogs = await paginate(Blog, Number(page), Number(limit), search, order, transform);
 
 
   return res.status(200).send({ error: false, message: "Fetched user blogs", data: allBlogs });
@@ -103,26 +157,59 @@ export const getBlogById = async(req: Request, res: Response, _next: NextFunctio
     paranoid: false,
   }
 
+  
   const options = req.skip ? defaultOptions : allowDraftOptions;
-
-  const foundBlogById = await Blog.findOne(options);
-
+  
+  const foundBlogById = await Blog.findOne({ ...options, include: User });
+  
   if (!foundBlogById) {
     return res.status(404).send({ error: true, message: "Blog not found!" });
   }
+  
+  if (req.currentUser !== foundBlogById.userId) {
+    console.log(req.currentUser);
+    console.log(foundBlogById.userId);
+    let updatedViews = foundBlogById.views! + 1;
+    await Blog.update(
+      {
+        views: updatedViews,
+      },
+      { where: { id } }
+      );
+  }
 
-  return res.status(200).send({ error: false, message: "Fetch blog by id", data: foundBlogById });
+  const transformData = {
+    id: foundBlogById.id,
+    title: foundBlogById.title,
+    description: foundBlogById.description,
+    created_at: foundBlogById.created_at,
+    deleted_at: foundBlogById.deleted_at,
+    cover_picture_url: foundBlogById.cover_picture_url,
+    isDraft: foundBlogById.is_draft,
+    userId: foundBlogById.userId,
+    author: `${foundBlogById.user.first_name} ${foundBlogById.user.last_name}`,
+    author_profile: foundBlogById.user.profile_picture_url,
+  }
+
+  return res.status(200).send({ 
+    error: false, 
+    message: "Fetch blog by id", 
+    data: transformData,
+  });
 }
 
 export const postUserBlog = async(req: Request, res: Response, _next: NextFunction) => {
-
   const image = req.file;
-
+  
   if (!image) {
     return res.status(400).send({ error: true, message: "Please provide a cover picture!" });
   }
 
-  const coverPhoto = image.filename;
+  const result = await uploadImage(image);
+  // Removes image from server's filesystem
+  unlinkSync(image.path);
+
+  const coverPhoto = `/storage/${result.Key}`;
 
   const errors = validationResult(req);
 
@@ -154,14 +241,13 @@ export const postUserBlog = async(req: Request, res: Response, _next: NextFuncti
 }
 
 export const editUserBlog = async(req: Request, res: Response, _next: NextFunction) => {
-
   const { currentUser } = req;
+
+  console.log("This is the body = ", req.body);
 
   const { id } = req.params;
 
-  const image = req.file;
-
-  const coverPhoto = image?.filename;
+  const image = req.file!;
 
   const errors = validationResult(req);
 
@@ -176,24 +262,33 @@ export const editUserBlog = async(req: Request, res: Response, _next: NextFuncti
     unarchive,
   } = req.body;
 
-  const isBlogIdValid = await Blog.findOne({ where: { userId: currentUser, id }, });
+  const finyBlogById = await Blog.findOne({ where: { userId: currentUser, id }, paranoid: false });
 
-  if (!isBlogIdValid) {
+  let result;
+
+  if (image) {
+    result = await uploadImage(image);
+    // Removes image from server's filesystem
+    unlinkSync(image.path);
+  }
+
+  const coverPhoto = result ? `/storage/${result?.Key}` : finyBlogById?.cover_picture_url;
+
+  if (!finyBlogById) {
     return res.status(400).send({ error: true, message: "Please provide a valid blog id, update failed!" });
   }
 
-  if (coverPhoto) {
-     // Removes user's current cover image in the server
-     updateImage(isBlogIdValid?.cover_picture_url!);
+  if (unarchive === "true") {
+    finyBlogById.restore();
+    return res.status(400).send({ error: false, message: "Blog restored!" });
   }
 
   const postBlog = await Blog.update(
-    { 
+    {
       title,
       description,
       cover_picture_url: coverPhoto,
       is_draft: isDraft,
-      deleted_at: unarchive && null,
     },
     { where: { userId: currentUser, id }});
 

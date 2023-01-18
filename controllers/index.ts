@@ -15,6 +15,7 @@ import {
 } from "./blog.controller";
 
 import { getProfile, updateProfile } from "./user.controller";
+import { getFileFromStorage } from "./storage.controller";
 import { notFound } from "./error.controller";
 
 export { 
@@ -30,5 +31,6 @@ export {
   deleteUserBlog,
   getProfile,
   updateProfile,
+  getFileFromStorage,
   notFound,
 };

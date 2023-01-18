@@ -1,6 +1,7 @@
 import authRouter from "./auth.routes";
 import userRouter from "./user.routes";
 import blogRouter from "./blog.routes";
+import storageRouter from "./storage.routes";
 import errorRouter from "./error.routes";
 
 export {
@@ -8,4 +9,5 @@ export {
   userRouter,
   blogRouter,
   errorRouter,
+  storageRouter,
 };

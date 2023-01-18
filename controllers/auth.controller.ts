@@ -1,9 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
 import { compare, genSalt, hash } from "bcrypt";
+// import md5 from "md5";
 import { JsonWebTokenError, JwtPayload, sign, verify } from "jsonwebtoken";
 
 import { User, Token } from "../models";
+import { uploadImage } from "../utils";
+import { unlinkSync } from "fs";
 
 export const login = async(req: Request, res: Response, _next: NextFunction) => {
   
@@ -48,21 +51,24 @@ export const login = async(req: Request, res: Response, _next: NextFunction) => 
     { where: { userId: foundUserByEmail.id }
   });
 
-  res.cookie("jwt", refreshToken, { httpOnly: true, sameSite: "none", secure: process.env.APP_ENV !== "dev", maxAge: 24 * 60 * 60 * 1000 });
-  return res.status(200).send({ error: false, message: `Welcome back, ${foundUserByEmail.first_name}!`, accessToken });
+  res.cookie("jwt", refreshToken, { httpOnly: true, sameSite: "strict", secure: true, maxAge: 24 * 60 * 60 * 1000 });
 
+  return res.status(200).send({ error: false, message: `Welcome back, ${foundUserByEmail.first_name}!`, accessToken });
 }
 
 export const signup = async(req: Request, res: Response, _next: NextFunction) => {
-
-  const image = req.file;
+  const image = req.file!;
 
   if (!image) {
     return res.status(400).send({ error: true, message: "Please provide a cover picture!" });
   }
 
-  const profilePicture = image.filename;
+  const result = await uploadImage(image);
+  // Removes image from server's filesystem
+  unlinkSync(image.path);
   
+  const profilePicture = `/storage/${result.Key}`;
+
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -109,7 +115,6 @@ export const signup = async(req: Request, res: Response, _next: NextFunction) =>
 }
 
 export const signout = async(req: Request, res: Response, next: NextFunction) => {
-
   const { cookies } = req;
   
   if (!cookies.jwt) {
@@ -118,7 +123,7 @@ export const signout = async(req: Request, res: Response, next: NextFunction) =>
 
   const token = cookies.jwt;
 
-  const isTokenValid = await Token.findOne({ where: { refresh_token: token }});
+  const isTokenValid = await Token.findOne({ where: { refresh_token: token }, include: User });
 
   if (!isTokenValid) {
     return res.status(400).send({ error: true, message: "Please provide a valid user id!" });
@@ -137,7 +142,7 @@ export const signout = async(req: Request, res: Response, next: NextFunction) =>
   if (removeRefreshToken) {
     res.clearCookie("jwt", { httpOnly: true });
     
-    return res.status(200).send({ error: false, message: `See you later, ${isTokenValid?.userId}` });
+    return res.status(200).send({ error: false, message: `See you later, ${isTokenValid?.user?.first_name}` });
   }
 
   return res.status(400).send({ error: true, message: "User not found!" });
@@ -182,7 +187,4 @@ export const refreshToken = async(req: Request, res: Response, next: NextFunctio
       return res.status(401).send({ error: true, message: err.message });
     }
   }
-
-
-
 }

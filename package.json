@@ -32,6 +32,7 @@
   },
   "homepage": "https://github.com/lozanasc/blogit#readme",
   "dependencies": {
+    "aws-sdk": "^2.1296.0",
     "bcrypt": "^5.1.0",
     "chalk": "^4.1.2",
     "cookie-parser": "^1.4.6",

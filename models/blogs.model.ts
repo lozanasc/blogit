@@ -11,7 +11,6 @@ import {
   BelongsTo,
   AllowNull,
   Default,
-  IsUrl,
   DataType,
 } from "sequelize-typescript";
 

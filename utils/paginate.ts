@@ -1,5 +1,7 @@
 import { Model } from "sequelize-typescript";
 
+import { User } from "../models";
+
 type GetOffsetFunction = (page: number, limit: number) => number;
 
 type PreviousPageFunction = (page: number) => number | null;
@@ -60,7 +62,7 @@ export const paginate = async (
     options.order = order;
   } 
 
-  let { count, rows } = await model.findAndCountAll(options);
+  let { count, rows } = await model.findAndCountAll({ ...options, include: User });
 
   if (transform) {
     rows = transform(rows);
