@@ -48,7 +48,7 @@ export const login = async(req: Request, res: Response, _next: NextFunction) => 
     { where: { userId: foundUserByEmail.id }
   });
 
-  res.cookie("jwt", refreshToken, { httpOnly: true, sameSite: "strict", secure: true, maxAge: 24 * 60 * 60 * 1000 });
+  res.cookie("jwt", refreshToken, { httpOnly: true, sameSite: "none", secure: process.env.APP_ENV !== "dev", maxAge: 24 * 60 * 60 * 1000 });
 
   return res.status(200).send({ error: false, message: `Welcome back, ${foundUserByEmail.first_name}!`, accessToken });
 }
