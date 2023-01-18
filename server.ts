@@ -22,13 +22,13 @@ import {
   fileStorage, 
   sequelize, 
 } from "./config";
-import { fileFilter, options } from "./utils";
+import { fileFilter } from "./utils";
 
 const PORT: number = Number(process.env.PORT) || 8000;
 
 const api: Application = express();
 
-api.use(cors({ credentials: true, origin: "http://localhost:3000"}));
+api.use(cors({ credentials: true, origin: process.env.ALLOWED_ORIGIN}));
 
 api.use(multer({ storage: fileStorage, fileFilter }).single("image"));
 
