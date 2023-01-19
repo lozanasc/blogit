@@ -15,8 +15,6 @@ import {
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
-
-import Axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import useFetch from "../../hooks/useFetch";
 
@@ -47,9 +45,7 @@ const AuthMenu = () => {
       isClosable: true,
     });
 
-    if (response.status === 200) {
-      onLogout();
-    }
+    onLogout();
   };
 
   return (
