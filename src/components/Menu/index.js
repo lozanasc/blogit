@@ -33,15 +33,11 @@ const AuthMenu = () => {
   });
 
   const handleLogout = async () => {
-    const response = await Axios(`${process.env.REACT_APP_TEST_URL}/signout`, {
-      method: "GET",
-      header: {
-        Authorization: `Bearer ${token}`,
-      },
-      withCredentials: true,
+    const response = await fetch(`${process.env.REACT_APP_TEST_URL}/signout`, {
+      credentials: "include",
     });
 
-    const resData = response.data;
+    const resData = response.json();
 
     toast({
       title: resData.error || !resData ? "Oops" : "Success",
