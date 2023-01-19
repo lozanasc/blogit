@@ -5,7 +5,6 @@ import {
   Button,
   Text,
   Heading,
-  Container,
 } from "@chakra-ui/react";
 import BlogCard from "../components/Card/Blog";
 
@@ -25,7 +24,8 @@ const Blogs = () => {
   }
 
   return (
-    <Container
+    <Flex
+      direction="column"
       minW="full"
       m="auto"
       py={12}
@@ -33,8 +33,10 @@ const Blogs = () => {
       <Flex
         display="flex"
         flexDir={["column", "column", "row"]}
-        // justify={data?.data?.total >= 4 && "space-evenly"}
+        m="auto"
+        justify={data?.data?.total >= 4 && "space-between"}
         flexWrap="wrap"
+        px={12}
         gap={6}
       >
         {isLoading && <Spinner mx="auto" size="xl" />}
@@ -71,7 +73,7 @@ const Blogs = () => {
           {data?.data?.currentPage}
         </Text>
       </Flex>
-    </Container>
+    </Flex>
   );
 };
 

@@ -16,9 +16,7 @@ const App = () => {
       m={0}
       p={0}
     >
-      {
-      appRouting
-    }
+      { appRouting }
     </Container>
   );
 };
