@@ -29,7 +29,6 @@ export const getProfile = async(req: Request, res: Response, _next: NextFunction
 }
 
 export const updateProfile = async(req: Request, res: Response, _next: NextFunction) => { 
-
   const { currentUser } = req;
 
   const image = req.file;
@@ -60,7 +59,7 @@ export const updateProfile = async(req: Request, res: Response, _next: NextFunct
 
   const profilePicture = result ? `/storage/${result?.Key}` : foundUserById?.profile_picture_url;
 
-  let newPassword: string = foundUserById?.password!;
+  let toBeUpdatedPassword: string = foundUserById?.password!;
 
   let updatePasswordChance = foundUserById?.password_chances;
 
@@ -70,15 +69,15 @@ export const updateProfile = async(req: Request, res: Response, _next: NextFunct
       return res.status(400).send({ error: true, message: "Sorry you're out of password chances." });
     }
 
-    let encryptedPassword = newPassword;
+    let encryptedPassword = toBeUpdatedPassword;
 
-    if (md5(password) !== newPassword) {
+    if (md5(password) !== toBeUpdatedPassword) {
       encryptedPassword = md5(password);
 
       updatePasswordChance = foundUserById?.password_chances! - 1;
     }
     
-    newPassword = encryptedPassword;
+    toBeUpdatedPassword = encryptedPassword;
   }
 
   const updateUserProfile = await User.update({
@@ -87,7 +86,7 @@ export const updateProfile = async(req: Request, res: Response, _next: NextFunct
     username,
     email,
     profile_picture_url: profilePicture,
-    password: newPassword,
+    password: toBeUpdatedPassword,
     password_chances: updatePasswordChance,
   },
   { where: { id: currentUser }});

@@ -52,12 +52,9 @@ export const getUserBlogs = async(req: Request, res: Response, _next: NextFuncti
 
   let order: any = [];
   
-  console.log(req.skip)
-
   if (!req.skip) {
     const limitPublic = id && search.where;
 
-    // base authorized user
     // Disabling paranoid will include soft-deleted records
     search = { ...search, paranoid: false }
     
@@ -167,8 +164,6 @@ export const getBlogById = async(req: Request, res: Response, _next: NextFunctio
   }
   
   if (req.currentUser !== foundBlogById.userId) {
-    console.log(req.currentUser);
-    console.log(foundBlogById.userId);
     let updatedViews = foundBlogById.views! + 1;
     await Blog.update(
       {
@@ -242,8 +237,6 @@ export const postUserBlog = async(req: Request, res: Response, _next: NextFuncti
 
 export const editUserBlog = async(req: Request, res: Response, _next: NextFunction) => {
   const { currentUser } = req;
-
-  console.log("This is the body = ", req.body);
 
   const { id } = req.params;
 
