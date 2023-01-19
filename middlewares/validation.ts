@@ -96,28 +96,28 @@ export const validateBlogUpdate = [
 export const validateProfileUpdate = [
 
   check("email")
-    .optional()
-    .isEmail()
-    .normalizeEmail()
-    .withMessage("Invalid email"),
+  .isEmail()
+  .normalizeEmail()
+  .withMessage("Invalid email")
+  .optional(),
 
   check("password")
-    .optional()
-    .isLength({ min: 8 })
-    .withMessage("Password must be at least 8+ characters long")
-    .matches(/(?=.*[!@#$%^&*])/)
-    .withMessage("Password must have atleast 1 special character")
-    .matches(/(?=.*[0-9])/)
-    .withMessage("Password must have atleast 1 numeric character"),
+  .isLength({ min: 8 })
+  .withMessage("Password must be at least 8+ characters long")
+  .matches(/(?=.*[!@#$%^&*])/)
+  .withMessage("Password must have atleast 1 special character")
+  .matches(/(?=.*[0-9])/)
+  .withMessage("Password must have atleast 1 numeric character")
+  .optional(),
 
   check("firstName")
-    .optional()
-    .isString()
-    .withMessage("Invalid type as firstName"),
+  .isString()
+  .withMessage("Invalid type as firstName")
+  .optional(),
 
   check("lastName")
-    .optional()
-    .isString()
-    .withMessage("Invalid type as lastName"),
-
+  .isString()
+  .withMessage("Invalid type as lastName")
+  .optional(),
+  
 ];
