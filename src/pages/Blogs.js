@@ -27,34 +27,33 @@ const Blogs = () => {
     <Flex
       direction="column"
       minW="full"
-      m="auto"
       py={12}
     >
       <Flex
         display="flex"
         flexDir={["column", "column", "row"]}
         m="auto"
-        justify={data?.data?.total >= 4 && "space-between"}
         flexWrap="wrap"
+        justifyContent="center"
         px={12}
-        gap={6}
+        gap={12}
       >
         {isLoading && <Spinner mx="auto" size="xl" />}
         {
-        data?.data?.data?.map((blog) => (
-          <BlogCard
-            key={blog?.id}
-            id={blog?.id}
-            bgSrc={`${process.env.REACT_APP_TEST_URL}${blog?.cover_picture_url}`}
-            createdAt={new Date(blog?.created_at).toDateString()}
-            title={blog?.title}
-            author={blog?.author}
-            authorProfile={`${process.env.REACT_APP_TEST_URL}${blog?.author_profile}`}
-          />
-        ))
-      }
+          data?.data?.data?.map((blog) => (
+            <BlogCard
+              key={blog?.id}
+              id={blog?.id}
+              bgSrc={`${process.env.REACT_APP_TEST_URL}${blog?.cover_picture_url}`}
+              createdAt={new Date(blog?.created_at).toDateString()}
+              title={blog?.title}
+              author={blog?.author}
+              authorProfile={`${process.env.REACT_APP_TEST_URL}${blog?.author_profile}`}
+            />
+          ))
+        }
       </Flex>
-      <Flex mt={6} gap={2}>
+      <Flex px={12} mt={6} gap={2}>
         <Button
           onClick={() => setQuery(`&page=${data?.data?.nextPage}`)}
           colorScheme="gray"

@@ -15,7 +15,7 @@ const All = () => {
   const { token } = useAuth();
 
   const [query, setQuery] = useState("");
-  const { isLoading, data } = useFetch(`${process.env.REACT_APP_TEST_URL}/blogs/user?limit=4${query}`, {
+  const { isLoading, data } = useFetch(`${process.env.REACT_APP_TEST_URL}/blogs/user?limit=6${query}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -37,6 +37,8 @@ const All = () => {
         minW="full"
         display="flex"
         flexDir={["column", "column", "row"]}
+        justifyContent="center"
+        flexWrap="wrap"
         gap={6}
       >
         {isLoading && <Spinner mx="auto" size="xl" />}

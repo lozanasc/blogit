@@ -3,6 +3,7 @@ import {
   Flex,
   Text,
   Spinner,
+  Box,
 } from "@chakra-ui/react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +28,11 @@ const MyArticles = () => {
   });
 
   if (isLoading) {
-    return <Spinner size="xl" />;
+    return (
+      <Box m="auto" py={32}>
+        <Spinner size="xl" />
+      </Box>
+    );
   }
 
   return (
@@ -36,7 +41,7 @@ const MyArticles = () => {
         data?.data?.total === 0 || !data?.data?.total
           ? <Empty />
           : (
-            <Flex direction="column">
+            <>
               <Text
                 textAlign="center"
                 fontWeight="extrabold"
@@ -45,7 +50,7 @@ const MyArticles = () => {
                 My Articles
               </Text>
               <Flex
-                w="full"
+                minW="full"
                 flexDir={["column", "column", "row"]}
                 justify={data?.data?.total >= 4 && "space-evenly"}
                 gap={2}
@@ -65,7 +70,7 @@ const MyArticles = () => {
                   ))
                 }
               </Flex>
-            </Flex>
+            </>
           )
       }
       {
