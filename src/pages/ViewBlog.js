@@ -57,11 +57,12 @@ const ViewBlog = () => {
 
   const buttonBgColor = useColorModeValue("#FAFAF9", "#313131");
 
-  const { isLoading, data } = useFetch(`${process.env.REACT_APP_TEST_URL}/blog/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const optionIfAuth = isAuthenticated && {
+    Authorization: `Bearer ${token}`,
+    withCredentials: false,
+  };
+
+  const { isLoading, data } = useFetch(`${process.env.REACT_APP_TEST_URL}/blog/${id}`, optionIfAuth);
 
   const onBlogArchive = async () => {
     const response = await Axios(`${process.env.REACT_APP_TEST_URL}/blog/${id}`, {
