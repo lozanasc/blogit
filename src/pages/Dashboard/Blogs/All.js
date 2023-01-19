@@ -16,9 +16,11 @@ const All = () => {
 
   const [query, setQuery] = useState("");
   const { isLoading, data } = useFetch(`${process.env.REACT_APP_TEST_URL}/blogs/user?limit=4${query}`, {
+    method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    withCredentials: true,
   });
 
   if (data?.data?.total === 0) {

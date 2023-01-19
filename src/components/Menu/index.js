@@ -30,6 +30,7 @@ const AuthMenu = () => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    withCredentials: true,
   });
 
   const handleLogout = async () => {

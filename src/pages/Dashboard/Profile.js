@@ -58,6 +58,7 @@ const Profile = () => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    withCredentials: true,
   });
 
   const onProfileChange = (e) => {

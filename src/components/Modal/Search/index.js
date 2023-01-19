@@ -18,7 +18,7 @@ import BlogCard from "../../Card/Blog";
 import useFetch from "../../../hooks/useFetch";
 
 const SearchModal = ({ query, isOpen, onClose }) => {
-  const { isLoading, data } = useFetch(`${process.env.REACT_APP_TEST_URL}/blogs?q=${query}&limit=3`, { withCredentials: false });
+  const { isLoading, data } = useFetch(`${process.env.REACT_APP_TEST_URL}/blogs?q=${query}&limit=3`);
 
   const modalBg = useColorModeValue("brand.base-dark", "brand.base-light");
 

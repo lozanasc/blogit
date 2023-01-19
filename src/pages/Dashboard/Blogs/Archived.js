@@ -21,6 +21,7 @@ const Archived = () => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    withCredentials: true,
   });
 
   if (data?.data?.total === 0) {

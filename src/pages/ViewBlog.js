@@ -57,13 +57,11 @@ const ViewBlog = () => {
 
   const buttonBgColor = useColorModeValue("#FAFAF9", "#313131");
 
-  const optionIfAuth = isAuthenticated ? {
+  const optionIfAuth = isAuthenticated && {
     headers: {
       Authorization: `Bearer ${token}`,
     },
     withCredentials: true,
-  } : {
-    withCredentials: false,
   };
 
   const { isLoading, data } = useFetch(`${process.env.REACT_APP_TEST_URL}/blog/${id}`, optionIfAuth);

@@ -23,6 +23,7 @@ const MyArticles = () => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    withCredentials: true,
   });
 
   if (isLoading) {

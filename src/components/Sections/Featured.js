@@ -13,7 +13,7 @@ import BlogCard from "../Card/Blog";
 import useFetch from "../../hooks/useFetch";
 
 const Featured = () => {
-  const { isLoading, data } = useFetch(`${process.env.REACT_APP_TEST_URL}/blogs?limit=4`);
+  const { isLoading, data } = useFetch(`${process.env.REACT_APP_TEST_URL}/blogs?limit=4`, { withCredentials: true });
 
   if (isLoading) {
     return (
