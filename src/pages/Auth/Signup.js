@@ -81,7 +81,7 @@ const Signup = () => {
         title: "Oops",
         description: error.message,
         status: "error",
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       });
     }
@@ -94,7 +94,7 @@ const Signup = () => {
       title: resData.error || !resData ? "Oops" : "Success",
       description: resData.message,
       status: resData.error ? "error" : "success",
-      duration: 9000,
+      duration: 5000,
       isClosable: true,
     });
   };

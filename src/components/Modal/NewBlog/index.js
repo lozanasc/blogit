@@ -88,7 +88,7 @@ const NewModal = ({ isOpen, onClose }) => {
       title: resData.error || !resData ? "Oops" : "Success",
       description: resData.message,
       status: resData.error ? "error" : "success",
-      duration: 9000,
+      duration: 5000,
       isClosable: true,
     });
 
@@ -101,7 +101,9 @@ const NewModal = ({ isOpen, onClose }) => {
       p={16}
       isOpen={isOpen}
       onClose={onClose}
-      size={["lg", "lg", "3xl", "6xl"]}
+      size={["xs", "lg", "3xl", "6xl"]}
+      closeOnOverlayClick={!isSubmitting}
+      isCentered={[true, true, false]}
     >
       <ModalOverlay />
       <ModalContent>
@@ -155,8 +157,8 @@ const NewModal = ({ isOpen, onClose }) => {
                     borderStyle: "dashed",
                   }}
                   backgroundImage={blogCoverPreviewUrl}
-                  px={[32, 32, 64]}
-                  py={[16]}
+                  px={[16, 16, 64]}
+                  py={[8, 8, 16]}
                 >
                   <Flex
                     direction="column"
@@ -168,6 +170,7 @@ const NewModal = ({ isOpen, onClose }) => {
                     <Text
                       align="center"
                       fontWeight="bold"
+                      fontSize={["xs", "xs", "lg"]}
                     >
                       DRAG OR UPLOAD COVER PICTURE
                     </Text>

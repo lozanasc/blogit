@@ -9,6 +9,7 @@ import Homepage from "./pages/Homepage";
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/Dashboard/Profile";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import Blogs from "./pages/Blogs";
 
 // eslint-disable-next-line no-unused-vars
 const appRoutes = (isAuthenticated = false) => [
@@ -19,6 +20,10 @@ const appRoutes = (isAuthenticated = false) => [
       {
         path: "/",
         element: <Homepage />,
+      },
+      {
+        path: "/blogs",
+        element: <Blogs />,
       },
       {
         path: "/blog/:id",

@@ -82,7 +82,7 @@ const EditModal = ({ data, isOpen, onClose }) => {
       title: resData.error || !resData ? "Oops" : "Success",
       description: resData.message,
       status: resData.error ? "error" : "success",
-      duration: 9000,
+      duration: 5000,
       isClosable: true,
     });
 
@@ -102,6 +102,8 @@ const EditModal = ({ data, isOpen, onClose }) => {
       isOpen={isOpen}
       onClose={onClose}
       size="6xl"
+      closeOnOverlayClick={!isSubmitting}
+      isCentered={[true, true, false]}
     >
       <ModalOverlay />
       <ModalContent>
@@ -151,8 +153,8 @@ const EditModal = ({ data, isOpen, onClose }) => {
                     borderStyle: "dashed",
                   }}
                   backgroundImage={blogCoverPreviewUrl}
-                  px={64}
-                  py={16}
+                  px={[16, 16, 64]}
+                  py={[8, 8, 16]}
                 >
                   <Flex
                     direction="column"
@@ -164,6 +166,7 @@ const EditModal = ({ data, isOpen, onClose }) => {
                     <Text
                       align="center"
                       fontWeight="bold"
+                      fontSize={["xs", "xs", "lg"]}
                     >
                       CLICK TO UPLOAD COVER
                     </Text>

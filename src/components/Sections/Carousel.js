@@ -21,7 +21,7 @@ const Carousel = () => {
         title: "Oops",
         description: error.message,
         status: "error",
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       });
     }

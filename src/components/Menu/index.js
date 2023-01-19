@@ -45,7 +45,7 @@ const AuthMenu = () => {
       title: resData.error || !resData ? "Oops" : "Success",
       description: resData.message,
       status: resData.error ? "error" : "success",
-      duration: 9000,
+      duration: 5000,
       isClosable: true,
     });
 

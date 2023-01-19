@@ -67,7 +67,7 @@ const Login = () => {
         title: "Oops",
         description: error.message,
         status: "error",
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       });
     }
@@ -80,7 +80,7 @@ const Login = () => {
       title: resData.error || !resData ? "Oops" : "Success",
       description: resData.message,
       status: resData.error ? "error" : "success",
-      duration: 9000,
+      duration: 5000,
       isClosable: true,
     });
   };

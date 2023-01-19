@@ -98,7 +98,7 @@ const Profile = () => {
       title: updateData.error || !updateData ? "Oops" : "Success",
       description: updateData.message,
       status: updateData.error ? "error" : "success",
-      duration: 9000,
+      duration: 5000,
       isClosable: true,
     });
   };

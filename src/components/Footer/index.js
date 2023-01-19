@@ -16,7 +16,7 @@ const Footer = () => {
 
   return (
     <Flex
-      mb="auto"
+      mt="auto"
       bgColor={footerBg}
       p={[8, 8, 16]}
       w="full"

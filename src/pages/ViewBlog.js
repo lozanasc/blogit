@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React, { useRef } from "react";
 import {
   Box,
@@ -27,6 +28,8 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/solid";
 import { useNavigate, useParams } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import Axios from "axios";
 import useFetch from "../hooks/useFetch";
 import useAuth from "../hooks/useAuth";
@@ -80,7 +83,7 @@ const ViewBlog = () => {
       title: resData.error || !resData ? "Oops" : "Success",
       description: resData.message,
       status: resData.error ? "error" : "success",
-      duration: 9000,
+      duration: 5000,
       isClosable: true,
     });
 
@@ -193,6 +196,8 @@ const ViewBlog = () => {
           >
             <Flex
               w="full"
+              flexDir={["column", "column", "row"]}
+              gap={[4, 4, 0]}
             >
               <Text>
                 {new Date(data?.data?.created_at).toDateString()}
@@ -200,7 +205,7 @@ const ViewBlog = () => {
               {
                 (isAuthenticated && data?.data?.userId === user)
                 && (
-                <Flex ml="auto" gap={2}>
+                <Flex ml={[0, 0, "auto"]} gap={2}>
                   <Button
                     colorScheme="blue"
                     leftIcon={<PencilSquareIcon height={16} />}
@@ -230,12 +235,18 @@ const ViewBlog = () => {
                 {data?.data?.author}
               </Text>
             </Flex>
-            <Text
-              whiteSpace="pre-wrap"
-              textAlign="justify"
-            >
-              {data?.data?.description}
-            </Text>
+            <ReactMarkdown
+              remarkPlugins={remarkGfm}
+              components={{
+                h1: ({ node, ...props }) => <Heading {...props} />,
+                h2: ({ node, ...props }) => <Heading {...props} as="h2" />,
+                h3: ({ node, ...props }) => <Heading {...props} as="h3" />,
+                h4: ({ node, ...props }) => <Heading {...props} as="h4" />,
+                h5: ({ node, ...props }) => <Heading {...props} as="h5" />,
+                h6: ({ node, ...props }) => <Heading {...props} as="h6" />,
+              }}
+              children={data?.data?.description}
+            />
           </Flex>
         </Flex>
       </>

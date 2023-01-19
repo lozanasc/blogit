@@ -1,11 +1,13 @@
+import React from "react";
 import {
   Box,
   Flex,
   Text,
   Spinner,
+  Container,
 } from "@chakra-ui/react";
-import React from "react";
-// import { Link as RouterLink } from "react-router-dom";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 import Empty from "./Empty";
 import BlogCard from "../Card/Blog";
@@ -14,6 +16,8 @@ import useFetch from "../../hooks/useFetch";
 
 const Featured = () => {
   const { isLoading, data } = useFetch(`${process.env.REACT_APP_TEST_URL}/blogs?limit=4`, { withCredentials: true });
+
+  const navigate = useNavigate();
 
   if (isLoading) {
     return (
@@ -24,9 +28,8 @@ const Featured = () => {
   }
 
   return (
-    <Box
+    <Container
       minW="full"
-      px={4}
       py={12}
     >
       {
@@ -65,7 +68,23 @@ const Featured = () => {
             </>
           )
       }
-    </Box>
+      {
+        data?.data?.total > 0
+        && (
+        <Text
+          as={motion.div}
+          whileHover={{ scale: 1.2, fontWeight: "bold" }}
+          maxW="fit-content"
+          py={12}
+          m="auto"
+          cursor="pointer"
+          onClick={() => navigate("/blogs")}
+        >
+          See All
+        </Text>
+        )
+      }
+    </Container>
   );
 };
 
