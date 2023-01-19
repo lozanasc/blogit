@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { genSalt, hash } from "bcrypt";
 import { validationResult } from "express-validator";
 import { unlinkSync } from "fs";
+import md5 from "md5";
 
 import { User } from "../models";
 import { uploadImage } from "../utils";
@@ -72,10 +72,8 @@ export const updateProfile = async(req: Request, res: Response, _next: NextFunct
 
     let encryptedPassword = newPassword;
 
-    if (password !== newPassword) {
-      const salt = await genSalt(10);
-      
-      encryptedPassword = await hash(password, salt);
+    if (md5(password) !== newPassword) {
+      encryptedPassword = md5(password);
 
       updatePasswordChance = foundUserById?.password_chances! - 1;
     }
