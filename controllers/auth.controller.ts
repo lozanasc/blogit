@@ -127,7 +127,7 @@ export const signout = async(req: Request, res: Response, next: NextFunction) =>
 
   if (!isTokenValid?.refresh_token === token) {
     res.clearCookie("jwt", { 
-      domain: process.env.ALLOWED_ORIGIN, 
+      domain: process.env.DOMAIN, 
       path: "/", 
       httpOnly: true,
       sameSite: "none",
@@ -143,7 +143,7 @@ export const signout = async(req: Request, res: Response, next: NextFunction) =>
 
   if (removeRefreshToken) {
     res.clearCookie("jwt", { 
-      domain: process.env.ALLOWED_ORIGIN, 
+      domain: process.env.DOMAIN, 
       path: "/", 
       httpOnly: true,
       sameSite: "none",
