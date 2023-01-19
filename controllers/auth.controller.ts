@@ -126,7 +126,13 @@ export const signout = async(req: Request, res: Response, next: NextFunction) =>
   }
 
   if (!isTokenValid?.refresh_token === token) {
-    res.clearCookie("jwt", { httpOnly: true });
+    res.clearCookie("jwt", { 
+      domain: process.env.ALLOWED_ORIGIN, 
+      path: "/", 
+      httpOnly: true,
+      sameSite: "none",
+      secure: process.env.APP_ENV !== "dev",
+    });
     return res.status(400).send({ error: false, message: "Something went wrong!" });
   }
 
@@ -134,10 +140,15 @@ export const signout = async(req: Request, res: Response, next: NextFunction) =>
     { refresh_token: null },
     { where: { userId: isTokenValid?.userId } },
   );
-  
+
   if (removeRefreshToken) {
-    res.clearCookie("jwt", { httpOnly: true });
-    
+    res.clearCookie("jwt", { 
+      domain: process.env.ALLOWED_ORIGIN, 
+      path: "/", 
+      httpOnly: true,
+      sameSite: "none",
+      secure: process.env.APP_ENV !== "dev",
+    });
     return res.status(200).send({ error: false, message: `See you later, ${isTokenValid?.user?.first_name}` });
   }
 
