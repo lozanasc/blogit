@@ -57,8 +57,10 @@ const ViewBlog = () => {
 
   const buttonBgColor = useColorModeValue("#FAFAF9", "#313131");
 
-  const optionIfAuth = isAuthenticated && {
+  const optionIfAuth = isAuthenticated ? {
     Authorization: `Bearer ${token}`,
+    withCredentials: true,
+  } : {
     withCredentials: false,
   };
 
