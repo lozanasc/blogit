@@ -15,6 +15,8 @@ import {
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
+
+import Axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import useFetch from "../../hooks/useFetch";
 
@@ -31,11 +33,12 @@ const AuthMenu = () => {
   });
 
   const handleLogout = async () => {
-    const response = await fetch(`${process.env.REACT_APP_TEST_URL}/signout`, {
-      credentials: "include",
+    const response = await Axios(`${process.env.REACT_APP_TEST_URL}/signout`, {
+      method: "GET",
+      withCredentials: true,
     });
 
-    const resData = response.json();
+    const resData = response.data;
 
     toast({
       title: resData.error || !resData ? "Oops" : "Success",
@@ -45,7 +48,9 @@ const AuthMenu = () => {
       isClosable: true,
     });
 
-    onLogout();
+    if (response.status === 200) {
+      onLogout();
+    }
   };
 
   return (

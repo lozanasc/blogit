@@ -48,16 +48,17 @@ export const AuthContextProvider = ({ children }) => {
     setIsAuthenticated(true);
     setUser(decoded?.userId);
   };
-
   const serverSignout = async () => {
-    await fetch(`${process.env.REACT_APP_TEST_URL}/signout`, {
-      credentials: "include",
+    await Axios(`${process.env.REACT_APP_TEST_URL}/signout`, {
+      method: "GET",
+      withCredentials: true,
     });
     logoutHandler();
   };
 
   const authRefresh = async () => {
-    const { data } = await Axios.get(`${process.env.REACT_APP_TEST_URL}/refresh`, {
+    const { data } = await Axios(`${process.env.REACT_APP_TEST_URL}/refresh`, {
+      method: "GET",
       header: {
         Authorization: `Bearer ${token}`,
       },
