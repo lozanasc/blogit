@@ -48,7 +48,12 @@ export const login = async(req: Request, res: Response, _next: NextFunction) => 
     { where: { userId: foundUserByEmail.id }
   });
 
-  res.cookie("jwt", refreshToken, { httpOnly: true, sameSite: "none", secure: process.env.APP_ENV !== "dev" });
+  res.cookie("jwt", refreshToken, { 
+    httpOnly: true, 
+    sameSite: "none", 
+    secure: process.env.APP_ENV !== "dev",
+    domain: process.env.DOMAIN,
+  });
 
   return res.status(200).send({ error: false, message: `Welcome back, ${foundUserByEmail.first_name}!`, accessToken });
 }
@@ -126,19 +131,13 @@ export const signout = async(req: Request, res: Response, next: NextFunction) =>
   }
 
   if (!isTokenValid?.refresh_token === token) {
-    // res.clearCookie("jwt", { 
-    //   domain: process.env.DOMAIN, 
-    //   path: "/", 
-    //   httpOnly: true,
-    //   sameSite: "none",
-    //   secure: process.env.APP_ENV !== "dev",
-    // });
-    res.cookie("jwt", "", {
+    res.clearCookie("jwt", { 
+      domain: process.env.DOMAIN,
       path: "/", 
       httpOnly: true,
-      secure: true,
-      maxAge: -1,
-    })
+      sameSite: "none",
+      secure: process.env.APP_ENV !== "dev",
+    });
     return res.status(400).send({ error: false, message: "Something went wrong!" });
   }
 
@@ -148,19 +147,13 @@ export const signout = async(req: Request, res: Response, next: NextFunction) =>
   );
 
   if (removeRefreshToken) {
-    // res.clearCookie("jwt", { 
-    //   domain: process.env.DOMAIN, 
-    //   path: "/", 
-    //   httpOnly: true,
-    //   sameSite: "none",
-    //   secure: process.env.APP_ENV !== "dev",
-    // });
-    res.cookie("jwt", "", {
+    res.clearCookie("jwt", { 
+      domain: process.env.DOMAIN, 
       path: "/", 
       httpOnly: true,
-      secure: true,
-      maxAge: -1,
-    })
+      sameSite: "none",
+      secure: process.env.APP_ENV !== "dev",
+    });
     return res.status(200).send({ error: false, message: `See you later, ${isTokenValid?.user?.first_name}` });
   }
 
