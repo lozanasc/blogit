@@ -126,13 +126,21 @@ export const signout = async(req: Request, res: Response, next: NextFunction) =>
   }
 
   if (!isTokenValid?.refresh_token === token) {
-    res.clearCookie("jwt", { 
-      domain: process.env.DOMAIN, 
+    // res.clearCookie("jwt", { 
+    //   domain: process.env.DOMAIN, 
+    //   path: "/", 
+    //   httpOnly: true,
+    //   sameSite: "none",
+    //   secure: process.env.APP_ENV !== "dev",
+    // });
+    res.cookie("jwt", "", {
+      domain: process.env.DOMAIN,
       path: "/", 
       httpOnly: true,
       sameSite: "none",
-      secure: process.env.APP_ENV !== "dev",
-    });
+      secure: true,
+      maxAge: -1,
+    })
     return res.status(400).send({ error: false, message: "Something went wrong!" });
   }
 
@@ -142,13 +150,21 @@ export const signout = async(req: Request, res: Response, next: NextFunction) =>
   );
 
   if (removeRefreshToken) {
-    res.clearCookie("jwt", { 
-      domain: process.env.DOMAIN, 
+    // res.clearCookie("jwt", { 
+    //   domain: process.env.DOMAIN, 
+    //   path: "/", 
+    //   httpOnly: true,
+    //   sameSite: "none",
+    //   secure: process.env.APP_ENV !== "dev",
+    // });
+    res.cookie("jwt", "", {
+      domain: process.env.DOMAIN,
       path: "/", 
       httpOnly: true,
       sameSite: "none",
-      secure: process.env.APP_ENV !== "dev",
-    });
+      secure: true,
+      maxAge: -1,
+    })
     return res.status(200).send({ error: false, message: `See you later, ${isTokenValid?.user?.first_name}` });
   }
 
