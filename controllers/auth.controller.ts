@@ -134,10 +134,8 @@ export const signout = async(req: Request, res: Response, next: NextFunction) =>
     //   secure: process.env.APP_ENV !== "dev",
     // });
     res.cookie("jwt", "", {
-      domain: process.env.DOMAIN,
       path: "/", 
       httpOnly: true,
-      sameSite: "none",
       secure: true,
       maxAge: -1,
     })
@@ -158,10 +156,8 @@ export const signout = async(req: Request, res: Response, next: NextFunction) =>
     //   secure: process.env.APP_ENV !== "dev",
     // });
     res.cookie("jwt", "", {
-      domain: process.env.DOMAIN,
       path: "/", 
       httpOnly: true,
-      sameSite: "none",
       secure: true,
       maxAge: -1,
     })
