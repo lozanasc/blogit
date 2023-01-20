@@ -11,8 +11,7 @@ import Profile from "./pages/Dashboard/Profile";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Blogs from "./pages/Blogs";
 
-// eslint-disable-next-line no-unused-vars
-const appRoutes = (isAuthenticated = false) => [
+const appRoutes = (isAuthenticated) => [
   {
     path: "/",
     element: <MainLayout />,
