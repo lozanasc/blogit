@@ -273,7 +273,7 @@ export const editUserBlog = async(req: Request, res: Response, _next: NextFuncti
 
   if (unarchive === "true") {
     finyBlogById.restore();
-    return res.status(400).send({ error: false, message: "Blog restored!" });
+    // return res.status(400).send({ error: false, message: "Blog restored!" });
   }
 
   const postBlog = await Blog.update(

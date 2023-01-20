@@ -65,18 +65,20 @@ export const updateProfile = async(req: Request, res: Response, _next: NextFunct
 
   if (password) {
     
-    if (foundUserById?.password_chances! <= 0) {
-      return res.status(400).send({ error: true, message: "Sorry you're out of password chances." });
-    }
-
     let encryptedPassword = toBeUpdatedPassword;
 
-    if (md5(password) !== toBeUpdatedPassword) {
+    if (password !== encryptedPassword) {
+      
+      if (foundUserById?.password_chances! <= 0) {
+        return res.status(400).send({ error: true, message: "Sorry you're out of password chances." });
+      }
+
       encryptedPassword = md5(password);
 
       updatePasswordChance = foundUserById?.password_chances! - 1;
     }
     
+
     toBeUpdatedPassword = encryptedPassword;
   }
 
