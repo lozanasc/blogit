@@ -20,6 +20,7 @@ import {
   // Link,
   FormLabel,
   Skeleton,
+  Spinner,
 } from "@chakra-ui/react";
 import {
   EnvelopeIcon,
@@ -74,15 +75,21 @@ const Profile = () => {
 
   const buttonBg = useColorModeValue("brand.base-dark", "brand.base-light");
 
-  const onSubmit = async (inputData) => {
+  const onSubmit = async ({
+    firstName,
+    lastName,
+    email,
+    password,
+    username,
+  }) => {
     const formData = new FormData();
 
-    formData.append("username", inputData.username || data?.data?.username);
-    formData.append("email", inputData.email || data?.data?.email);
-    formData.append("firstName", inputData.firstName || data?.data?.firstName);
-    formData.append("lastName", inputData.lastName || data?.data?.lastName);
-    formData.append("password", inputData.password || data?.data?.password);
-    formData.append("image", profile || data?.data?.profile_picture_url);
+    formData.append("username", username || data?.data?.username);
+    formData.append("email", email || data?.data?.email);
+    formData.append("firstName", firstName || data?.data?.firstName);
+    formData.append("lastName", lastName || data?.data?.lastName);
+    formData.append("password", password || data?.data?.password);
+    formData.append("image", profile || null);
 
     const response = await fetch(`${process.env.REACT_APP_TEST_URL}/profile`, {
       method: "PATCH",
@@ -103,6 +110,14 @@ const Profile = () => {
     });
   };
 
+  if (isLoading) {
+    return (
+      <Box m="auto" py={32}>
+        <Spinner size="xl" />
+      </Box>
+    );
+  }
+
   return (
     <>
       <Flex
@@ -118,7 +133,7 @@ const Profile = () => {
           </FormErrorMessage>
           <HStack justify="center">
             <Input
-              {...register("image", {})}
+              {...register("image")}
               cursor="pointer"
               id="image"
               type="file"
@@ -204,12 +219,7 @@ const Profile = () => {
                 children={<EnvelopeIcon color={inputDisabledColor} height={16} />}
               />
               <Input
-                {...register("email", {
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Invalid email address",
-                  },
-                })}
+                {...register("email")}
                 isDisabled={!isEditing}
                 variant="filled"
                 defaultValue={data?.data?.email}
@@ -228,8 +238,7 @@ const Profile = () => {
             <InputGroup>
               <Skeleton w="full" isLoaded={!isLoading}>
                 <Input
-                  {...register("firstName", {
-                  })}
+                  {...register("firstName")}
                   isInvalid={errors.firstName}
                   variant="filled"
                   defaultValue={data?.data?.first_name}
@@ -242,8 +251,7 @@ const Profile = () => {
             <InputGroup>
               <Skeleton w="full" isLoaded={!isLoading}>
                 <Input
-                  {...register("lastName", {
-                  })}
+                  {...register("lastName")}
                   isInvalid={errors.lastName}
                   variant="filled"
                   defaultValue={data?.data?.last_name}
@@ -268,8 +276,7 @@ const Profile = () => {
                 children={<UserIcon color={inputDisabledColor} height={16} />}
               />
               <Input
-                {...register("username", {
-                })}
+                {...register("username")}
                 variant="filled"
                 isDisabled={!isEditing}
                 defaultValue={data?.data?.username}
@@ -292,8 +299,7 @@ const Profile = () => {
                 children={<LockOpenIcon color={inputDisabledColor} height={16} />}
               />
               <Input
-                {...register("password", {
-                })}
+                {...register("password")}
                 type="password"
                 variant="filled"
                 isDisabled={!isEditing}

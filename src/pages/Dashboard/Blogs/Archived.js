@@ -44,6 +44,7 @@ const Archived = () => {
         {
         data?.data?.data?.map((blog) => (
           <BlogCard
+            m={["auto", "auto", 0]}
             key={blog?.id}
             id={blog?.id}
             bgSrc={`${process.env.REACT_APP_TEST_URL}${blog?.cover_picture_url}`}

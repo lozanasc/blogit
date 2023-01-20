@@ -64,6 +64,7 @@ const NewModal = ({ isOpen, onClose }) => {
     setBlogCoverPreviewUrl(null);
     reset();
     onClose();
+    navigate("/");
   };
 
   const onSubmit = async (data) => {
@@ -93,7 +94,6 @@ const NewModal = ({ isOpen, onClose }) => {
     });
 
     onExit();
-    navigate("/");
   };
 
   return (

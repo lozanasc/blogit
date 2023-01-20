@@ -13,7 +13,7 @@ import useFetch from "../hooks/useFetch";
 const Blogs = () => {
   const [query, setQuery] = useState("");
 
-  const { isLoading, data } = useFetch(`${process.env.REACT_APP_TEST_URL}/blogs?limit=8${query}`);
+  const { isLoading, data } = useFetch(`${process.env.REACT_APP_TEST_URL}/blogs?limit=6${query}`);
 
   if (data?.data?.total === 0) {
     return (
@@ -25,7 +25,6 @@ const Blogs = () => {
 
   return (
     <Flex
-      direction="column"
       minW="full"
       py={12}
     >
@@ -33,8 +32,8 @@ const Blogs = () => {
         display="flex"
         flexDir={["column", "column", "row"]}
         m="auto"
+        justify="center"
         flexWrap="wrap"
-        justifyContent="center"
         px={12}
         gap={12}
       >
@@ -52,25 +51,25 @@ const Blogs = () => {
             />
           ))
         }
-      </Flex>
-      <Flex px={12} mt={6} gap={2}>
-        <Button
-          onClick={() => setQuery(`&page=${data?.data?.nextPage}`)}
-          colorScheme="gray"
-        >
-          Next Page
-        </Button>
-        <Button
-          onClick={() => setQuery(`&page=${data?.data?.previousPage}`)}
-          colorScheme="gray"
-        >
-          Previous Page
-        </Button>
-        <Text my="auto" ml="auto" pr={6}>
-          Page
-          {" "}
-          {data?.data?.currentPage}
-        </Text>
+        <Flex minW="full" px={12} mt={6} gap={2}>
+          <Button
+            onClick={() => setQuery(`&page=${data?.data?.nextPage}`)}
+            colorScheme="gray"
+          >
+            Next Page
+          </Button>
+          <Button
+            onClick={() => setQuery(`&page=${data?.data?.previousPage}`)}
+            colorScheme="gray"
+          >
+            Previous Page
+          </Button>
+          <Text my="auto" ml="auto" pr={6}>
+            Page
+            {" "}
+            {data?.data?.currentPage}
+          </Text>
+        </Flex>
       </Flex>
     </Flex>
   );

@@ -124,7 +124,7 @@ const EditModal = ({ data, isOpen, onClose }) => {
             onSubmit={handleSubmit(onSubmit)}
           >
             <FormControl
-              isDisabled={data?.data?.deleted_at !== null}
+              isDisabled={!unarchive && data?.data?.deleted_at !== null}
               isInvalid={errors.coverImage}
             >
               <FormErrorMessage textAlign="center" fontSize="lg" mb={2}>
@@ -178,7 +178,7 @@ const EditModal = ({ data, isOpen, onClose }) => {
                         bgColor="transparent"
                         _hover={{ bgColor: "transparent" }}
                         onClick={() => setBlogCoverPreviewUrl(null)}
-                        isDisabled={data?.data?.deleted_at !== null}
+                        isDisabled={!unarchive && data?.data?.deleted_at !== null}
                       >
                         Remove
                       </Button>
@@ -210,7 +210,7 @@ const EditModal = ({ data, isOpen, onClose }) => {
                 Save as draft
               </Text>
               <Switch
-                isDisabled={data?.data?.deleted_at !== null}
+                isDisabled={!unarchive && data?.data?.deleted_at !== null}
                 defaultChecked={isDraft}
                 ml={2}
                 my="auto"
@@ -233,7 +233,7 @@ const EditModal = ({ data, isOpen, onClose }) => {
                 colorScheme="gray"
                 placeholder="Title"
                 defaultValue={data?.data?.title}
-                isDisabled={data?.data?.deleted_at !== null}
+                isDisabled={!unarchive && data?.data?.deleted_at !== null}
               />
             </FormControl>
 
@@ -253,7 +253,7 @@ const EditModal = ({ data, isOpen, onClose }) => {
                 colorScheme="gray"
                 placeholder="Description"
                 defaultValue={data?.data?.description}
-                isDisabled={data?.data?.deleted_at !== null}
+                isDisabled={!unarchive && data?.data?.deleted_at !== null}
               />
             </FormControl>
 
