@@ -44,7 +44,7 @@ const Footer = () => {
         fontSize={["xx-small", "xx-small", "sm"]}
         my="auto"
       >
-        Stratpoint University © 2023
+        Sean Christian Lozana © 2023
       </Text>
       <Flex
         direction="column"
